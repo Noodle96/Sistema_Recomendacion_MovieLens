@@ -28,7 +28,7 @@ RecommendationSystem::RecommendationSystem() {
     cout_debug_file << "[RECOMMENDATION SYSTEM] RecommendationSystem()" << endl;
     cout_debug_file << "\t[RECOMMENDATION SYSTEM] Load ratings.csv BEGIN" << endl;
     Timer timer("Load ratings.csv");
-    std::ifstream archivo_csv_ratings("../../../dataset/32M/ml-32m/ratings.csv");
+    std::ifstream archivo_csv_ratings("../../../dataset/33M/ml-33m/ratings.csv");
     getline(archivo_csv_ratings,linea); // omitir la linea de cabecera
     cout_debug_file << "\t linea de cabecera: " << linea << "\n";
     // Verificar si el archivo se abrió correctamente
@@ -61,7 +61,7 @@ RecommendationSystem::RecommendationSystem() {
 	string genre;
 	cout_debug_file << "\t[RECOMMENDATION SYSTEM] Load movies.csv BEGIN" << endl;
 	timer.reset("Load movies.csv");
-	std::ifstream archivo_csv_movies("../../../dataset/32M/ml-32m/movies.csv");
+	std::ifstream archivo_csv_movies("../../../dataset/33M/ml-33m/movies.csv");
 	getline(archivo_csv_movies, linea); // omitir la linea de cabecera
     cout_debug_file << "\t linea de cabecera: " << linea << "\n";
 	// Verificar si el archivo se abrió correctamente
@@ -119,7 +119,7 @@ RecommendationSystem::RecommendationSystem() {
 	printGenresFrequency();
 
 	// Agregando requerimineto links.csv
-	std::ifstream archivo_csv_links("../../../dataset/32M/ml-32m/links.csv");
+	std::ifstream archivo_csv_links("../../../dataset/33M/ml-33m/links.csv");
 	getline(archivo_csv_links, linea); // omitir la linea de cabecera
 	// Verificar si el archivo se abrió correctamente
 	if (archivo_csv_links.is_open()) {
@@ -765,10 +765,9 @@ unordered_map<int, vector<pair<float, int>>> RecommendationSystem::recomendar(ve
 			// este if dice que la pelicula no ha sido vista por el usuarioARecomendar
 			if( movieFound == hash_movie_rating_userARecomendar.end() ){
 				// si la pelicula no esta en el hash de ratings del usuarioARecomendar, la recomendamos
-				auto& movieInfo = this->movies[movie];
+				// auto& movieInfo = this->movies[movie];
 				// recommended_movies[userX].emplace_back(make_pair(rating,movieInfo.first));
 				recommended_movies[userX].emplace_back(make_pair(rating,movie));
-
 			}
 		}
 		// ordenamos el valor del hash
@@ -1051,6 +1050,42 @@ vector<tuple<int, string, vector<string>>> RecommendationSystem::getUnratedMovie
     return resultado;
 }
 
+void RecommendationSystem::addUserWithId(int userId)
+{
+    if (users.find(userId) != users.end())
+        return;
+
+    users.insert(userId);
+    user_movie_ratings[userId] = unordered_map<int, float>();
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+// 											END OTHERS
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+vector<pair<float, int>> RecommendationSystem::getPopularMovies(int limit)
+{
+    unordered_map<int, float> movieScores;
+
+    for (auto &[user, movies] : user_movie_ratings)
+    {
+        for (auto &[movie, rating] : movies)
+        {
+            movieScores[movie] += rating;
+        }
+    }
+
+    vector<pair<float, int>> result;
+    for (auto &[movie, score] : movieScores)
+    {
+        result.emplace_back(score, movie);
+    }
+
+    sort(result.begin(), result.end(), greater<>());
+
+    if (result.size() > limit)
+        result.resize(limit);
+    return result;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 // 											END OTHERS

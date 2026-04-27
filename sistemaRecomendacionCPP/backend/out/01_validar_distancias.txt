@@ -1,0 +1,10 @@
+[EUCLIDEAN DISTANCE] calculateEuclideanDistanceDebug() BEGIN
+	[EUCLIDEAN DISTANCE] distance between 1 and 2
+	[EUCLIDEAN DISTANCE] smaller size: 52
+	[EUCLIDEAN DISTANCE] larger size: 141
+	[EUCLIDEAN DISTANCE] commonMovies: 2
+	[Timer] Calculate Euclidean Distance: 0.00156871 seg
+	[EUCLIDEAN DISTANCE] euclidean distance: 4.24264050
+[EUCLIDEAN DISTANCE] calculateEuclideanDistanceDebug() END
+
+

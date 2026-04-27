@@ -260,6 +260,8 @@ class RecommendationSystem {
         */
         vector<tuple<int, string, vector<string>>> getUnratedMoviesByGenre(int userId, const string& genre, int limit = 30);
 
+        vector<pair<float, int>> getPopularMovies(int limit = 30);
+        void addUserWithId(int userId);
 };
 
 #endif // RECOMENDATION_SYSTEM_H
