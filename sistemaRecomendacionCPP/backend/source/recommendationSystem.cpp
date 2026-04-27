@@ -9,6 +9,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 RecommendationSystem::RecommendationSystem() {
 	// Abre el archivo para escritura (sobrescribe cada vez)
+
+
+    
 	cout_debug_file.open("../out/output_recommendation_systema.txt", std::ios::out);
 	cout_debug_file_01_validar_distancias.open("../out/01_validar_distancias.txt", std::ios::out);
 	cout_debug_file_02_calcular_knn.open("../out/02_calcular_knn.txt", std::ios::out);
@@ -19,18 +22,22 @@ RecommendationSystem::RecommendationSystem() {
 	if(!cout_debug_file_02_calcular_knn) std::cerr << "No se pudo abrir 02_calcular_knn.txt\n";
 	if(!cout_debug_file_03_calcular_recomendaciones) std::cerr << "No se pudo abrir 03_calcular_recomendaciones.txt\n";
 	if(!cout_debug_file_04_peliculas_recomendar) std::cerr << "No se pudo abrir 04_peliculas_recomendar.txt\n";
-
+    
     string linea;
     int userId, movieId;
     float rating;
     string timestamp;
     // Constructor implementation can be empty or initialize data structures if needed
+
+    
     cout_debug_file << "[RECOMMENDATION SYSTEM] RecommendationSystem()" << endl;
     cout_debug_file << "\t[RECOMMENDATION SYSTEM] Load ratings.csv BEGIN" << endl;
     Timer timer("Load ratings.csv");
+    
+
     std::ifstream archivo_csv_ratings("../../../dataset/33M/ml-33m/ratings.csv");
     getline(archivo_csv_ratings,linea); // omitir la linea de cabecera
-    cout_debug_file << "\t linea de cabecera: " << linea << "\n";
+    // cout_debug_file << "\t linea de cabecera: " << linea << "\n";
     // Verificar si el archivo se abrió correctamente
 	if (archivo_csv_ratings.is_open()) {
 		while (getline(archivo_csv_ratings, linea)) {
@@ -47,23 +54,27 @@ RecommendationSystem::RecommendationSystem() {
 			addRatingAndUser(userId, movieId, rating, timestamp);
 		}
 		archivo_csv_ratings.close();
-		cout_debug_file << "\t\t";
+        
+        cout_debug_file << "\t\t";
 		timer.printElapsed(cout_debug_file);
     	cout_debug_file << "\t[RECOMMENDATION SYSTEM] Load ratings.csv END\n" << endl;
 		cout_debug_file << "\t";
 		printUser();
+        
 	} else {
 		cout_debug_file << "\tError al abrir el archivo rating.csv" << std::endl;
 	}
-    cout_debug_file << "\t linea de cabecera: " << linea << "\n";
+    // cout_debug_file << "\t linea de cabecera: " << linea << "\n";
 
 
 	string genre;
+    
 	cout_debug_file << "\t[RECOMMENDATION SYSTEM] Load movies.csv BEGIN" << endl;
 	timer.reset("Load movies.csv");
+    
 	std::ifstream archivo_csv_movies("../../../dataset/33M/ml-33m/movies.csv");
 	getline(archivo_csv_movies, linea); // omitir la linea de cabecera
-    cout_debug_file << "\t linea de cabecera: " << linea << "\n";
+    // cout_debug_file << "\t linea de cabecera: " << linea << "\n";
 	// Verificar si el archivo se abrió correctamente
 	if (archivo_csv_movies.is_open()) {
 		while (getline(archivo_csv_movies, linea)) {
@@ -110,14 +121,20 @@ RecommendationSystem::RecommendationSystem() {
 		}
 
 		archivo_csv_movies.close();
+        
 		cout_debug_file << "\t\t";
 		timer.printElapsed(cout_debug_file);
 		cout_debug_file << "\t[RECOMMENDATION SYSTEM] Load movies.csv END\n" << endl;
+        
 	} else{
 		cout_debug_file << "\tError al abrir el archivo movies.csv" << std::endl;
 	}
 	printGenresFrequency();
 
+
+
+
+    
 	// Agregando requerimineto links.csv
 	std::ifstream archivo_csv_links("../../../dataset/33M/ml-33m/links.csv");
 	getline(archivo_csv_links, linea); // omitir la linea de cabecera
@@ -777,6 +794,7 @@ unordered_map<int, vector<pair<float, int>>> RecommendationSystem::recomendar(ve
 	}
 	return recommended_movies;
 }
+
 unordered_map<int, vector<pair<float, int>>> RecommendationSystem::recomendarDebug(vector<pair<int, float>>& knn_result, int userARecomendar){
 	unordered_map<int, vector<pair<float, int>>> recommended_movies; // Peliculas recomendadas y sus ratings
 
@@ -851,49 +869,236 @@ unordered_map<int, vector<pair<float, int>>> RecommendationSystem::recomendarDeb
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 // 										BEGIN RECOMENDATION SYSTEM 04
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-vector<pair<float, int>> RecommendationSystem::recomendarMovie(unordered_map<int,vector<pair<float, int>>>& peliculasRecomendadasByUser, int userARecomendar){
-	// recommended_movies[userX].emplace_back(make_pair(rating,movie));
-	cout_debug_file_04_peliculas_recomendar << "[RECOMENDAR MOVIE] recomendarCancion() BEGIN" << endl;
-	cout_debug_file_04_peliculas_recomendar << "\t[RECOMENDAR MOVIE] Recomendacion para el user: " << userARecomendar << endl;
-	Timer timer("recomendarMovie");
-	unordered_map<int, vector<float>> movie_vectorRatings;
-	for (const auto& [user, movies] : peliculasRecomendadasByUser) {
-		for (const auto& [rating, movieId] : movies) {
-			movie_vectorRatings[movieId].push_back(rating);
-		}
-	}
-	// cout_debug_file_04_peliculas_recomendar << "\t";
-	// timer.printElapsed(cout_debug_file_04_peliculas_recomendar, "seg");
+// vector<pair<float, int>> RecommendationSystem::recomendarMovie(unordered_map<int,vector<pair<float, int>>>& peliculasRecomendadasByUser, int userARecomendar){
+// 	// recommended_movies[userX].emplace_back(make_pair(rating,movie));
+// 	cout_debug_file_04_peliculas_recomendar << "[RECOMENDAR MOVIE] recomendarCancion() BEGIN" << endl;
+// 	cout_debug_file_04_peliculas_recomendar << "\t[RECOMENDAR MOVIE] Recomendacion para el user: " << userARecomendar << endl;
+// 	Timer timer("recomendarMovie");
+// 	unordered_map<int, vector<float>> movie_vectorRatings;
+// 	for (const auto& [user, movies] : peliculasRecomendadasByUser) {
+// 		for (const auto& [rating, movieId] : movies) {
+// 			movie_vectorRatings[movieId].push_back(rating);
+// 		}
+// 	}
+// 	// cout_debug_file_04_peliculas_recomendar << "\t";
+// 	// timer.printElapsed(cout_debug_file_04_peliculas_recomendar, "seg");
 
-	vector<pair<float, int>> respuestaFinal;
-	// Timer timer2("calculo all score");
-	for(const auto&[movieId, ratings]: movie_vectorRatings){
-		float suma = 0;
-		for(auto rating: ratings) suma += rating;
-		int count = (int)ratings.size();
-		if(count < UMBRAL_VECINOS_SIMILARES) continue; // Si hay menos de 3 vecinos, no recomendamos
-		// Calcular el score final
-		int totalVecinos = (int)peliculasRecomendadasByUser.size();
-		float score = (suma*count)/ totalVecinos;
-		respuestaFinal.emplace_back(score, movieId);
-	}
-	sort(respuestaFinal.begin(), respuestaFinal.end(), [](const pair<float, int>& a, const pair<float, int>& b) {
-		return a.first > b.first; // Ordenar por score descendente
-	});
-	cout_debug_file_04_peliculas_recomendar << "\t";
-	timer.printElapsed(cout_debug_file_04_peliculas_recomendar,"seg");
+// 	vector<pair<float, int>> respuestaFinal;
+// 	// Timer timer2("calculo all score");
+// 	for(const auto&[movieId, ratings]: movie_vectorRatings){
+// 		float suma = 0;
+// 		for(auto rating: ratings) suma += rating;
+// 		int count = (int)ratings.size();
+// 		if(count < UMBRAL_VECINOS_SIMILARES) continue; // Si hay menos de 3 vecinos, no recomendamos
+// 		// Calcular el score final
+// 		int totalVecinos = (int)peliculasRecomendadasByUser.size();
+// 		float score = (suma*count)/ totalVecinos;
+// 		respuestaFinal.emplace_back(score, movieId);
+// 	}
+// 	sort(respuestaFinal.begin(), respuestaFinal.end(), [](const pair<float, int>& a, const pair<float, int>& b) {
+// 		return a.first > b.first; // Ordenar por score descendente
+// 	});
+// 	cout_debug_file_04_peliculas_recomendar << "\t";
+// 	timer.printElapsed(cout_debug_file_04_peliculas_recomendar,"seg");
 
-	Timer timer3("write recomendacion movies");
-	cout_debug_file_04_peliculas_recomendar << "\t[RECOMENDAR MOVIE] write recomendacion movies" << endl;
-	for(const auto& [scoreCalculado, movieID]: respuestaFinal){
-		cout_debug_file_04_peliculas_recomendar << "\t\t[RECOMENDAR MOVIE] Movie ID: " << movieID << "{" << movies[movieID].first << "}"
-		<< " with score: " << fixed << setprecision(4) << scoreCalculado << endl;
-	}
-	cout_debug_file_04_peliculas_recomendar << "\t";
-	timer3.printElapsed(cout_debug_file_04_peliculas_recomendar);
-	cout_debug_file_04_peliculas_recomendar << "[RECOMENDAR MOVIE] recomendarCancion() END" << endl;
-	return respuestaFinal;
+// 	Timer timer3("write recomendacion movies");
+// 	cout_debug_file_04_peliculas_recomendar << "\t[RECOMENDAR MOVIE] write recomendacion movies" << endl;
+// 	for(const auto& [scoreCalculado, movieID]: respuestaFinal){
+// 		cout_debug_file_04_peliculas_recomendar << "\t\t[RECOMENDAR MOVIE] Movie ID: " << movieID << "{" << movies[movieID].first << "}"
+// 		<< " with score: " << fixed << setprecision(4) << scoreCalculado << endl;
+// 	}
+// 	cout_debug_file_04_peliculas_recomendar << "\t";
+// 	timer3.printElapsed(cout_debug_file_04_peliculas_recomendar);
+// 	cout_debug_file_04_peliculas_recomendar << "[RECOMENDAR MOVIE] recomendarCancion() END" << endl;
+// 	return respuestaFinal;
+// }
+
+vector<pair<float, int>> RecommendationSystem::recomendarMovie( unordered_map<int,
+    vector<pair<float, int>>>& peliculasRecomendadasByUser,
+    vector<pair<int, float>>& knn_result, int userARecomendar, string metrica) {
+
+    unordered_map<int, float> pesoVecino;
+    for (const auto& [userX, valorMetrica] : knn_result) {
+        if (metrica == "euclidean" || metrica == "manhattan") {
+            pesoVecino[userX] = 1.0f / (1.0f + valorMetrica);
+        } else if (metrica == "cosine" || metrica == "pearson") {
+            pesoVecino[userX] = valorMetrica;
+        }
+    }
+
+    unordered_map<int, pair<float, float>> movie_score_data;
+    unordered_map<int, int> movie_count;
+
+    for (const auto& [userX, moviesRecommendedByUserX] : peliculasRecomendadasByUser) {
+        auto pesoIt = pesoVecino.find(userX);
+        if (pesoIt == pesoVecino.end())continue;
+        float peso = pesoIt->second;
+        if (peso <= 0.0f)continue;
+
+        for (const auto& [rating, movieId] : moviesRecommendedByUserX) {
+            movie_score_data[movieId].first += rating * peso;
+            movie_score_data[movieId].second += peso;
+            movie_count[movieId]++;
+        }
+    }
+
+    vector<pair<float, int>> respuestaFinal;
+    for (const auto& [movieId, scoreData] : movie_score_data) {
+        float sumaPonderada = scoreData.first;
+        float sumaPesos = scoreData.second;
+        if (movie_count[movieId] < UMBRAL_VECINOS_SIMILARES)continue;
+
+        if (sumaPesos <= 0.0f) continue;
+        float score = sumaPonderada / sumaPesos;
+        respuestaFinal.emplace_back(score, movieId);
+    }
+
+    sort( respuestaFinal.begin(), respuestaFinal.end(), [](const pair<float, int>& a, const pair<float, int>& b) {
+            return a.first > b.first;
+        }
+    );
+
+    return respuestaFinal;
 }
+
+vector<pair<float, int>> RecommendationSystem::recomendarMovieDebug(
+    unordered_map<int, vector<pair<float, int>>>& peliculasRecomendadasByUser,
+    vector<pair<int, float>>& knn_result,
+    int userARecomendar,
+    string metrica
+) {
+    cout_debug_file_04_peliculas_recomendar << "[RECOMENDAR MOVIE DEBUG] recomendarMovieDebug() BEGIN" << endl;
+    cout_debug_file_04_peliculas_recomendar << "\t[RECOMENDAR MOVIE DEBUG] Usuario objetivo: " << userARecomendar << endl;
+    cout_debug_file_04_peliculas_recomendar << "\t[RECOMENDAR MOVIE DEBUG] Metrica usada: " << metrica << endl;
+
+    Timer timer("recomendarMovieDebug");
+
+    unordered_map<int, float> pesoVecino;
+
+    cout_debug_file_04_peliculas_recomendar << "\t[RECOMENDAR MOVIE DEBUG] Construyendo pesos de vecinos..." << endl;
+
+    for (const auto& [userX, valorMetrica] : knn_result) {
+        if (metrica == "euclidean" || metrica == "manhattan") {
+            pesoVecino[userX] = 1.0f / (1.0f + valorMetrica);
+        } else if (metrica == "cosine" || metrica == "pearson") {
+            pesoVecino[userX] = valorMetrica;
+        }
+        /*
+        cout_debug_file_04_peliculas_recomendar
+            << "\t\tVecino: " << userX
+            << " | valorMetrica: " << fixed << setprecision(4) << valorMetrica
+            << " | peso: " << fixed << setprecision(4) << pesoVecino[userX]
+            << endl;
+        */
+    }
+
+    unordered_map<int, pair<float, float>> movie_score_data;
+    unordered_map<int, int> movie_count;
+
+    cout_debug_file_04_peliculas_recomendar << "\t[RECOMENDAR MOVIE DEBUG] Acumulando scores ponderados por pelicula..." << endl;
+
+    for (const auto& [userX, moviesRecommendedByUserX] : peliculasRecomendadasByUser) {
+        auto pesoIt = pesoVecino.find(userX);
+
+        if (pesoIt == pesoVecino.end()) {
+            // cout_debug_file_04_peliculas_recomendar
+            //     << "\t\tVecino " << userX << " no encontrado en pesoVecino. Se omite." << endl;
+            continue;
+        }
+
+        float peso = pesoIt->second;
+
+        if (peso <= 0.0f) {
+            // cout_debug_file_04_peliculas_recomendar
+            //     << "\t\tVecino " << userX << " tiene peso <= 0. Se omite." << endl;
+            continue;
+        }
+
+        for (const auto& [rating, movieId] : moviesRecommendedByUserX) {
+            movie_score_data[movieId].first += rating * peso;
+            movie_score_data[movieId].second += peso;
+            movie_count[movieId]++;
+
+            // cout_debug_file_04_peliculas_recomendar
+            //     << "\t\tMovieID: " << movieId
+            //     << " | vecino: " << userX
+            //     << " | rating: " << fixed << setprecision(4) << rating
+            //     << " | peso: " << fixed << setprecision(4) << peso
+            //     << " | rating*peso: " << fixed << setprecision(4) << rating * peso
+            //     << endl;
+        }
+    }
+
+    vector<pair<float, int>> respuestaFinal;
+
+    cout_debug_file_04_peliculas_recomendar << "\t[RECOMENDAR MOVIE DEBUG] Calculando score final..." << endl;
+
+    for (const auto& [movieId, scoreData] : movie_score_data) {
+        float sumaPonderada = scoreData.first;
+        float sumaPesos = scoreData.second;
+        int cantidadVecinos = movie_count[movieId];
+
+        if (cantidadVecinos < UMBRAL_VECINOS_SIMILARES) {
+            // cout_debug_file_04_peliculas_recomendar
+            //     << "\t\tMovieID: " << movieId
+            //     << " omitida. Vecinos similares: " << cantidadVecinos
+            //     << " < UMBRAL_VECINOS_SIMILARES: " << UMBRAL_VECINOS_SIMILARES
+            //     << endl;
+            continue;
+        }
+
+        if (sumaPesos <= 0.0f) {
+            // cout_debug_file_04_peliculas_recomendar
+            //     << "\t\tMovieID: " << movieId
+            //     << " omitida. sumaPesos <= 0." << endl;
+            continue;
+        }
+
+        float score = sumaPonderada / sumaPesos;
+
+        respuestaFinal.emplace_back(score, movieId);
+
+        // cout_debug_file_04_peliculas_recomendar
+        //     << "\t\tMovieID: " << movieId
+        //     << " | sumaPonderada: " << fixed << setprecision(4) << sumaPonderada
+        //     << " | sumaPesos: " << fixed << setprecision(4) << sumaPesos
+        //     << " | vecinos: " << cantidadVecinos
+        //     << " | score final: " << fixed << setprecision(4) << score
+        //     << endl;
+    }
+
+    sort(
+        respuestaFinal.begin(),
+        respuestaFinal.end(),
+        [](const pair<float, int>& a, const pair<float, int>& b) {
+            return a.first > b.first;
+        }
+    );
+
+    cout_debug_file_04_peliculas_recomendar << "\t[RECOMENDAR MOVIE DEBUG] Resultado final ordenado:" << endl;
+
+    for (const auto& [scoreCalculado, movieID] : respuestaFinal) {
+        // cout_debug_file_04_peliculas_recomendar
+        //     << "\t\tMovie ID: " << movieID
+        //     << " {" << movies[movieID].first << "}"
+        //     << " | score: " << fixed << setprecision(4) << scoreCalculado
+        //     << endl;
+    }
+
+    cout_debug_file_04_peliculas_recomendar << "\t";
+    timer.printElapsed(cout_debug_file_04_peliculas_recomendar, "seg");
+
+    cout_debug_file_04_peliculas_recomendar << "[RECOMENDAR MOVIE DEBUG] recomendarMovieDebug() END" << endl;
+
+    return respuestaFinal;
+}
+
+
+
+
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 // 										END RECOMENDATION SYSTEM 04
 ///////////////////////////////////////////////////////////////////////////////////////////////////////

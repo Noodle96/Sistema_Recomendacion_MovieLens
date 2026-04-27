@@ -171,7 +171,8 @@ class RecommendationSystem {
             peliculasRecomendadasPorUsuarios: unordered_map<int,vector<pair<float, int>>>
             userARecomendar: int
         */
-        vector<pair<float, int>> recomendarMovie(unordered_map<int,vector<pair<float, int>>> &, int);
+        vector<pair<float, int>> recomendarMovie(unordered_map<int, vector<pair<float, int>>> &, vector<pair<int, float>> &, int,string);
+        vector<pair<float, int>> recomendarMovieDebug(unordered_map<int, vector<pair<float, int>>>&, vector<pair<int, float>>&, int, string);
 
         /*
             Agregar un usuaior

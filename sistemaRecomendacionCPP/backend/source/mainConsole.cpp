@@ -188,19 +188,19 @@ void startRecommendationSystem(){
                 cout << "insertar idUser-n-metrica(euclidean, manhattan, cosine, pearson)" << endl;
                 cin >> idUser >> n >> metrica;
                 ofstream& log4 = recommendationSystem.getCoutDebugFile04PeliculasRecomendar();
-                log4 << "\t[KNN main] knn+recomendarMovie begin" << endl;
-                Timer timer("\t[KNN main]");
+                log4 << "\t[KNN paralelo] knn begin" << endl;
+                
                 knnResults = recommendationSystem.knnParalelo(n, idUser, metrica);
                 if(knnResults.empty()){
                     cout << "\tNo hay usuarios con peliculas en comun o no hay usuarios registrados.\n\n" << endl;
                     break;
                 }
+                
+
                 unordered_map<int, vector<pair<float, int>>> recomendaciones;
                 recomendaciones = recommendationSystem.recomendar(knnResults, idUser);
                 log4 << "\t";
-                timer.printElapsed(log4, "seg");
-                log4 << "\t[KNN main] knn+recomendarMovie END" << endl;
-                recommendationSystem.recomendarMovie(recomendaciones, idUser);
+                recommendationSystem.recomendarMovieDebug(recomendaciones, knnResults ,idUser, metrica);
                 cout << "Eso es todo !!!" << endl;
                 break;
             }

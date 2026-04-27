@@ -820,7 +820,7 @@ int main()
     // 1. Generar recomendaciones completas
     auto vecinos = sistema.knnParalelo(n, user, metric);
     auto recs    = sistema.recomendar(vecinos, user);
-    auto final   = sistema.recomendarMovie(recs, user);
+    auto final   = sistema.recomendarMovie(recs, vecinos, user, metric);
 
     // 2. Fallback si no hay personalizadas
     //if (final.empty())

@@ -1,26 +1,26 @@
 [RECOMMENDATION SYSTEM] RecommendationSystem()
 	[RECOMMENDATION SYSTEM] Load ratings.csv BEGIN
 	 linea de cabecera: userId,movieId,rating,timestamp
-		[Timer] Load ratings.csv: 210.756 seg
+		[Timer] Load ratings.csv: 35.0471 seg
 	[RECOMMENDATION SYSTEM] Load ratings.csv END
 
 	[RECOMMENDATION SYSTEM] printUser() BEGIN
 	[PRINTUSER] Usuario con maximo peliculas calificadas: 33332
-		[Timer] write users.txt: 0.888874 seg
+		[Timer] write users.txt: 0.463183 seg
 	[RECOMMENDATION SYSTEM] printUser() END
 
 	 linea de cabecera: 
 	[RECOMMENDATION SYSTEM] Load movies.csv BEGIN
 	 linea de cabecera: movieId,title,genres
-		[Timer] Load movies.csv: 2.08615 seg
+		[Timer] Load movies.csv: 0.257864 seg
 	[RECOMMENDATION SYSTEM] Load movies.csv END
 
 [RECOMMENDATION SYSTEM] printGenresFrequency() BEGIN
-		[Timer] write genres_frequency.txt: 0.00117778 seg
+		[Timer] write genres_frequency.txt: 4.8604e-05 seg
 	[RECOMMENDATION SYSTEM] printGenresFrequency() END
 
 	[RECOMMENDATION SYSTEM] Load links.csv END
 [RECOMMENDATION SYSTEM] printLinks() BEGIN
-		[Timer] write links.txt: 0.0906533 seg
+		[Timer] write links.txt: 0.0169471 seg
 	[RECOMMENDATION SYSTEM] printLinks() END
 
